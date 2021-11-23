@@ -5,7 +5,8 @@ module.exports = {
     // 项目id和token数组
     tokens: [
         { name: 'AI管家音响管理后台', id: '38', token: 'e38d8b2087b12241cddefbba2a9c26f0cd77fa6a054dd70bb0b52150ec0905a8' },
-        { name: 'HDOS商家版web', id: '309', token: '4b0720a69d1a7370d7484bd1d4910bb6a51d06fa8d6f08689dbeb7779e6b3945' }
+        { name: 'HDOS商家版web', id: '309', token: '4b0720a69d1a7370d7484bd1d4910bb6a51d06fa8d6f08689dbeb7779e6b3945' },
+        { name: '云迹工作台web', id: '290', token: '17ec61875fad6a43db5c5ff91f00a0a4d31f9ba6ffa09b2e6a7903794ebdeafd' }
     ],
     "commonTokens": [
         {
