@@ -1,0 +1,6 @@
+{
+    "apiUrl": "https://yapi.yunjiai.cn/",
+    "tokens": [
+        { "name": "AI管家音响管理后台", "id": "38", "token": "e38d8b2087b12241cddefbba2a9c26f0cd77fa6a054dd70bb0b52150ec0905a8" }
+    ]
+}
