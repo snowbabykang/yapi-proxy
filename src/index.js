@@ -73,7 +73,14 @@ const proxyApi = function (req, res) {
                 })
                 .catch(function (error) {
                     // 处理错误情况
-                    console.warn(error);
+                    if (error.response) {
+                        console.error('真实接口请求错误存在response')
+                        res.writeHead(error.response.status, error.response.headers);
+                        res.write(JSON.stringify(error.response.data));
+                        res.end();
+                    } else {
+                        console.warn(error);
+                    }
                 })
         });
     } else {
@@ -88,7 +95,14 @@ const proxyApi = function (req, res) {
             })
             .catch(function (error) {
                 // 处理错误情况
-                console.warn(error);
+                if (error.response) {
+                    console.error('真实接口请求错误存在response')
+                    res.writeHead(error.response.status, error.response.headers);
+                    res.write(JSON.stringify(error.response.data));
+                    res.end();
+                } else {
+                    console.warn(error);
+                }
             })
     }
 };
