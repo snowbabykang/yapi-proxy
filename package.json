@@ -12,7 +12,8 @@
   },
   "author": "kangxue",
   "license": "ISC",
-  "devDependencies": {
+  "devDependencies": {},
+  "dependencies": {
     "axios": "^0.24.0"
   }
 }
