@@ -3,7 +3,6 @@
 const axios = require('axios').default;
 const http = require('http');
 const qs = require('querystring');
-const Buffer = require('buffer').Buffer;
 const gitConfig = require('./config.js');
 let config = null;
 // 数据缓存
@@ -288,7 +287,7 @@ server.listen(port);
 console.log(arguments.length > 0 ? ("启动成功，代理正监听端口：" + port) : "缺少参数！！！");
 
 // 获取git上的配置
-// let gitConfigUrl  = 'https://raw.githubusercontent.com/snowbabykang/vue-webExample/master/config.json'
+// let gitConfigUrl  = 'https://raw.githubusercontent.com/snowbabykang/yapi-proxy/master/config.json'
 // axios.get(gitConfigUrl).then((res) => {
 //     const { status, data } = res;
 //     if (status !== 200) {
