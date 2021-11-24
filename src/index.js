@@ -26,7 +26,7 @@ const getCommonApiList = function (callback) {
         cache.commonApiList = data.list;
         callback();
     }).catch(error => {
-        console.warn(error);
+        console.log('\x1B[33m%s', error);
     });
 }
 
@@ -74,21 +74,20 @@ const proxyApi = function (req, res) {
                 .catch(function (error) {
                     // 处理错误情况
                     if (error.response) {
-                        console.error('真实接口请求错误存在response')
+                        console.log('\x1B[31m%s', '真实接口post请求错误存在response');
                         res.writeHead(error.response.status, error.response.headers);
-                        res.write(JSON.stringify(error.response.data));
+                        res.write(error.response.data instanceof Object ? JSON.stringify(error.response.data) : error.response.data);
                         res.end();
                     } else {
-                        console.warn(error);
+                        console.log('\x1B[33m%s', error);
                     }
                 })
-        });
+            });
     } else {
         const fullUrl = realUrl + req.url;
         axios.get(fullUrl, { headers: getHeader(req) })
             .then(function (response) {
                 // 处理成功情况
-                console.log(response.data);
                 res.writeHead(response.status, response.headers);
                 res.write(JSON.stringify(response.data));
                 res.end();
@@ -96,12 +95,12 @@ const proxyApi = function (req, res) {
             .catch(function (error) {
                 // 处理错误情况
                 if (error.response) {
-                    console.error('真实接口请求错误存在response')
+                    console.log('\x1B[31m%s', '真实接口get请求错误存在response');
                     res.writeHead(error.response.status, error.response.headers);
-                    res.write(JSON.stringify(error.response.data));
+                    res.write(error.response.data instanceof Object ? JSON.stringify(error.response.data) : error.response.data);
                     res.end();
                 } else {
-                    console.warn(error);
+                    console.log('\x1B[33m%s', error);
                 }
             })
     }
@@ -125,20 +124,20 @@ const mockHandle = function (req, res, type) {
             getData += data
         })
         req.on("end", () => {
-            const data = qs.parse(getData);
-            axios.post(mockUrl, data, { headers: getHeader(req) })
-                .then(function (response) {
-                    // 处理成功情况
-                    console.log(response.data);
-                    // 写入响应头header
-                    res.writeHead(response.status, response.headers);
-                    res.write(JSON.stringify(response.data));
-                    res.end();
-                })
-                .catch(function (error) {
-                    // 处理错误情况
-                    console.warn(error);
-                })
+        const data = qs.parse(getData);
+        axios.post(mockUrl, data, { headers: getHeader(req) })
+            .then(function (response) {
+                // 处理成功情况
+                console.log(response.data);
+                // 写入响应头header
+                res.writeHead(response.status, response.headers);
+                res.write(JSON.stringify(response.data));
+                res.end();
+            })
+            .catch(function (error) {
+                // 处理错误情况
+                console.log('\x1B[33m%s', error);
+            })
         });
     } else {
         const fullUrl = req.headers['x-forwarded-proto'] + '://' + req.headers['x-forwarded-host'] + reqApi;
@@ -150,12 +149,12 @@ const mockHandle = function (req, res, type) {
                 // 处理成功情况
                 console.log(response.data);
                 res.writeHead(response.status, response.headers);
-                res.write(JSON.stringify(response.data));
+                res.write(response.data);
                 res.end();
             })
             .catch(function (error) {
                 // 处理错误情况
-                console.warn(error);
+                console.log('\x1B[33m%s', error);
             })
     }
 }
@@ -175,7 +174,7 @@ const getApiStatus = async function (id, token) {
         }
         return res;
     } catch (error) {
-        console.error(error);
+        console.log('\x1B[31m%s', error);
     }
 }
 // 公共接口下一步处理
@@ -257,7 +256,7 @@ const handleApiNext = async function (apiList, token, req, res) {
 const handleRequset = function (req, res) {
     const item = config.tokens.find(ele => ele.id === catId)
     if (!item) {
-        console.error(`找不到${catId}对应的项目，请确认配置文件‘config.js’是否正确！`);
+        console.log('\x1B[31m%s', `找不到${catId}对应的项目，请确认配置文件‘config.js’是否正确！`);
         return;
     }
     // 判断当前缓存的api是否有数据，如果没有则重新获取
@@ -275,7 +274,7 @@ const handleRequset = function (req, res) {
             .catch(function (error) {
                 // 处理错误情况
                 console.log('项目接口列表获取失败！');
-                console.warn(error);
+                console.log('\x1B[33m%s', error);
             })
         return;
     }
@@ -298,14 +297,14 @@ config = gitConfig;
 commonConf = gitConfig.commonTokens[0];
 const server = http.createServer(onProxy);
 server.listen(port);
-console.log(arguments.length > 0 ? ("启动成功，代理正监听端口：" + port) : "缺少参数！！！");
+console.log('\x1B[32m%s',arguments.length > 0 ? ("启动成功，代理正监听端口：" + port) : "缺少参数！！！");
 
 // 获取git上的配置
 // let gitConfigUrl  = 'https://raw.githubusercontent.com/snowbabykang/yapi-proxy/master/config.json'
 // axios.get(gitConfigUrl).then((res) => {
 //     const { status, data } = res;
 //     if (status !== 200) {
-//         console.error('获取配置失败，请重新启动');
+//         console.log('\x1B[31m%s', '获取配置失败，请重新启动');
 //         return;
 //     }
 //     config = data;
@@ -314,5 +313,5 @@ console.log(arguments.length > 0 ? ("启动成功，代理正监听端口：" + 
 //     server.listen(port);
 //     console.log(arguments.length > 0 ? ("启动成功，代理正监听端口：" + port) : "缺少参数！！！");
 // }).catch(err => {
-//     console.error(err);
+//     console.log('\x1B[31m%s', err);
 // })
